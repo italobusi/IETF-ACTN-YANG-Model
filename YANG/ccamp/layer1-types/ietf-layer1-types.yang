@@ -31,7 +31,7 @@ module ietf-layer1-types {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision "2022-04-07" {
+  revision "2022-04-27" {
     description
       "Initial Version";
     reference
@@ -902,6 +902,54 @@ module ietf-layer1-types {
     }
   }
 
+  grouping otn-max-link-bandwidth {
+    description
+      "Maximum bandwidth attributes for OTN links";
+    uses otn-link-bandwidth {
+      augment otn {
+        description
+          "Augment OTN Link Bandwidth.";
+        choice odtu-type {
+          description
+            "The type of Optical Data Tributary Unit (ODTU) used
+            on the link to support ODUflex LSPs.";
+          leaf odtu-k {
+            type enumeration {
+              enum ODTU2 {
+                description
+                  "ODTU2.ts";
+              }
+              enum ODTU3 {
+                description
+                  "ODTU3.ts";
+              }
+              enum ODTU4 {
+                description
+                  "ODTU4.ts";
+              }
+            }
+            description
+              "The type of ODTUk.ts used on the link.";
+          }
+          leaf odtu-cn {
+            type uint16;
+            description
+              "The type of ODUCn.ts used on the link.";
+          }
+          reference
+            "ITU-T G.709 v6.0 (06/2020), Table 7-7: Interfaces for
+            the Optical Transport Network (OTN)";
+        }
+        leaf max-ts-num {
+          type otn-ts;
+          description
+            "The maximum number of timeslots (TS) that can be
+            allocated to the ODUflex LSPs on the link.";
+        }
+      }
+    }
+  }
+
   grouping otn-path-bandwidth {
     description
       "Bandwidth attributes for OTN paths.";
@@ -998,6 +1046,33 @@ module ietf-layer1-types {
                packet client nominal bit rate for an ODUflex(IMP).";
           }
         }
+      }
+    }
+  }
+
+  grouping otn-max-lsp-bandwidth {
+    description
+      "Maximum bandwidth attributes for OTN LSPs.";
+    container otn {
+      description
+        "Maximum bandwidth attributes for OTN LSPs.";
+      leaf odu-type {
+        type identityref {
+          base odu-type;
+        }
+        description "ODU type";
+      }
+      leaf max-ts-num {
+        when 'derived-from-or-self(./odu-type,"ODUflex") or
+              derived-from-or-self(./odu-type,"ODUflex-resizable")'{
+          description
+            "Applicable when odu-type is ODUflex or
+             ODUflex-resizable";
+        }
+        type otn-ts;
+        description
+          "The maximum number of timeslots (TS) that can be
+          allocated to an ODUflex LSP on the link.";
       }
     }
   }

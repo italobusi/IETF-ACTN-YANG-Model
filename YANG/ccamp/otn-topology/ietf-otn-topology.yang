@@ -53,7 +53,7 @@ module ietf-otn-topology {
      data model. The model fully conforms
      to the Network Management Datastore Architecture (NMDA).
 
-     Copyright (c) 2021 IETF Trust and the persons
+     Copyright (c) 2022 IETF Trust and the persons
      identified as authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -65,7 +65,7 @@ module ietf-otn-topology {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2021-07-08 {
+  revision 2022-04-27 {
     description
       "Initial Revision";
     reference
@@ -97,18 +97,24 @@ module ietf-otn-topology {
     }
     description "Augment link configuration";
 
-    leaf tsg {
-      type identityref {
-        base l1-types:tributary-slot-granularity;
+    container otn-link {
+      presence
+        "Indicates that the link is an OTN link.";
+      description
+        "Attributes for an OTN link.";
+      leaf tsg {
+        type identityref {
+          base l1-types:tributary-slot-granularity;
+        }
+        description "Tributary slot granularity.";
+        reference
+          "G.709/Y.1331, February 2016: Interfaces for the
+          Optical Transport Network (OTN)";
       }
-      description "Tributary slot granularity.";
-      reference
-        "G.709/Y.1331, February 2016: Interfaces for the
-         Optical Transport Network (OTN)";
-    }
-    leaf distance {
-      type uint32;
-      description "distance in the unit of kilometers";
+      leaf distance {
+        type uint32;
+        description "distance in the unit of kilometers";
+      }
     }
   }
 
@@ -159,7 +165,7 @@ module ietf-otn-topology {
       "Augment maximum LSP TE bandwidth for the link termination
        point (LTP).";
     case otn {
-      uses l1-types:otn-path-bandwidth;
+      uses l1-types:otn-max-lsp-bandwidth;
     }
   }
 
@@ -301,7 +307,7 @@ module ietf-otn-topology {
     description
       "Augment maximum LSP TE bandwidth for the TE link.";
     case otn {
-      uses l1-types:otn-path-bandwidth;
+      uses l1-types:otn-max-lsp-bandwidth;
     }
   }
 
@@ -318,7 +324,7 @@ module ietf-otn-topology {
     description
       "Augment maximum TE bandwidth for the TE link";
     case otn {
-      uses l1-types:otn-link-bandwidth;
+      uses l1-types:otn-max-link-bandwidth;
     }
   }
 
@@ -371,7 +377,7 @@ module ietf-otn-topology {
       "Augment maximum LSP TE bandwidth for the TE link
        information source";
     case otn {
-      uses l1-types:otn-path-bandwidth;
+      uses l1-types:otn-max-lsp-bandwidth;
     }
   }
 
@@ -389,7 +395,7 @@ module ietf-otn-topology {
       "Augment maximum TE bandwidth for the TE link
        information source";
     case otn {
-      uses l1-types:otn-link-bandwidth;
+      uses l1-types:otn-max-link-bandwidth;
     }
   }
 
@@ -438,7 +444,7 @@ module ietf-otn-topology {
       "Augment maximum LSP TE bandwidth of the TE link
        template";
     case otn {
-      uses l1-types:otn-path-bandwidth;
+      uses l1-types:otn-max-lsp-bandwidth;
     }
   }
 
@@ -449,7 +455,7 @@ module ietf-otn-topology {
     description
       "Augment maximum TE bandwidth the TE link template";
     case otn {
-      uses l1-types:otn-link-bandwidth;
+      uses l1-types:otn-max-link-bandwidth;
     }
   }
 
